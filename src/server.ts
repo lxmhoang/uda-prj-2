@@ -34,7 +34,14 @@ import {filterImageFromURL, deleteLocalFiles, imgPath} from './util/util';
   // Root Endpoint
   // Displays a simple message to the user
   app.use('/img', express.static(imgPath));
+  app.get("/", async ( req, res ) => {
+    res.send("Hello uda");
+  })
   app.get( "/filteredimage", async ( req, res ) => {
+    if (!req.query.image_url) {
+      res.status(422).send("Image_URL requried");
+
+    }
 
     filterImageFromURL(req.query.image_url).then((filePath) => {
       var path = require("path");
