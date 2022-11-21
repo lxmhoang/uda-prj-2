@@ -2,6 +2,12 @@
 
 github URL : https://github.com/lxmhoang/uda-prj-2
 
+# Product : 
+url for eb deployed by master branch 
+http://image-filter-starter-code-dev22222222222222.us-west-2.elasticbeanstalk.com/
+
+url for eb deployed by dev branch 
+http://image-filter-starter-code-dev2.us-west-2.elasticbeanstalk.com
 
 # Udagram Image Filtering Microservice
 
