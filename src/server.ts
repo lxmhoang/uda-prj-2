@@ -43,7 +43,8 @@ import {filterImageFromURL, deleteLocalFiles, imgPath} from './util/util';
       console.log(filteredURL);
       res.send(`<img src="${filteredURL}" >`);
     }).catch((e) => {
-      console.error(e);
+      console.error("error caught : "+e.message);
+      res.status(500).send(e.message);
      });
     
   } );
