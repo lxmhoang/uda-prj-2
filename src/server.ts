@@ -1,14 +1,6 @@
 import express from 'express';
 import bodyParser from 'body-parser';
-import {path} from "path";
-import http from 'http'
-import https from 'https'
 import {filterImageFromURL, deleteLocalFiles} from './util/util';
-import { s3 } from './util/aws';
-import { rejects } from 'assert';
-import { AnyLengthString } from 'aws-sdk/clients/comprehend';
-import AWS from 'aws-sdk';
-
 
 (async () => {
 
@@ -38,53 +30,7 @@ import AWS from 'aws-sdk';
   /**************************************************************************** */
 
   //! END @TODO1
-  var fs = require('fs'), http = require('http'), https = require('https');  
-
-   
-  function downloadImage(url : String, filePath: String) {
-    var client = http;
-    if (url.toString().indexOf("https") === 0) {
-      client = https;
-    }
-
-    return new Promise((resolve, reject) => {
-      const file = fs.createWriteStream(filePath);   
-     
-
-      const request = client.get( url, function(response: any)  {
-        if (response.statusCode !== 200) {
-          fs.unlink(filePath, () => {
-            reject(new Error(`Failed to get '${url}' (${response.statusCode})`));
-          });
-          return;
-        }
-  
-        // fileInfo = {
-        //   mime: response.headers['content-type'],
-        //   size: parseInt(response.headers['content-length'], 10),
-        // };
-  
-        response.pipe(file);
-      
-      });
-      // The destination stream is ended by the time it's called
-       file.on('finish', () => resolve(filePath));
-
-       request.on('error', err => {
-         fs.unlink(filePath, () => reject(err));
-       });
-
-      file.on('error', err => {
-        fs.unlink(filePath, () => reject(err));
-      });
-
-      request.end();
-    });
-    
-   
-    
-  };
-  
+ 
   // Root Endpoint
   // Displays a simple message to the user
   app.use('/img', express.static('src/util/tmp'));
