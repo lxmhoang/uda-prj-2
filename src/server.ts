@@ -1,6 +1,6 @@
 import express from 'express';
 import bodyParser from 'body-parser';
-import {filterImageFromURL, deleteLocalFiles} from './util/util';
+import {filterImageFromURL, deleteLocalFiles, imgPath} from './util/util';
 
 (async () => {
 
@@ -33,24 +33,18 @@ import {filterImageFromURL, deleteLocalFiles} from './util/util';
  
   // Root Endpoint
   // Displays a simple message to the user
-  app.use('/img', express.static('src/util/tmp'));
+  app.use('/img', express.static(imgPath));
   app.get( "/filteredimage", async ( req, res ) => {
 
     filterImageFromURL(req.query.image_url).then((filePath) => {
       var path = require("path");
       const filename = path.parse(filePath).base;
-      // const filteredURL = req.headers.host.concat("/img/").concat(filename);
       const filteredURL = "img/".concat(filename);
-      console.log(filename);
-  
       console.log(filteredURL);
       res.send(`<img src="${filteredURL}" >`);
-
-
     }).catch((e) => {
       console.error(e);
      });
-
     
   } );
 

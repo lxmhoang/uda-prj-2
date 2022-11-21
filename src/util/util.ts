@@ -1,6 +1,9 @@
-import fs from "fs";
+import fs, { PathLike } from "fs";
 import Jimp = require("jimp");
 import axios = require("axios");
+const path = require("path");
+const {dirname} = require("path");
+export const imgPath = dirname(require.main.filename)  + "/tmp/filtered/" ;
 
 // filterImageFromURL
 // helper function to download, filter, and save the filtered image locally
@@ -23,14 +26,15 @@ export async function filterImageFromURL(inputURL: string): Promise<string> {
         return Jimp.read(imageBuffer)
       })
 
-      // const photo = await Jimp.read(inputURL);
+      
+      cleanDir(imgPath);
       const outpath =
-        "/tmp/filtered." + Math.floor(Math.random() * 2000) + ".jpg";
+      imgPath + Math.floor(Math.random() * 2000) + ".jpg";
       await photo
         .resize(256, 256) // resize
         .quality(60) // set JPEG quality
         .greyscale() // set greyscale
-        .write(__dirname + outpath, (img) => {
+        .write( outpath, (img) => {
           resolve(__dirname + outpath);
         });
     } catch (error) {
@@ -38,6 +42,21 @@ export async function filterImageFromURL(inputURL: string): Promise<string> {
     }
   });
 }
+
+
+export async function cleanDir(dir: string) {
+  if (!fs.existsSync(dir)) 
+  { return ;}
+  fs.readdir(dir, (err, files) => {
+    if (err) throw err;
+  
+    for (const file of files) {
+      fs.unlink(path.join(dir, file), (err) => {
+        if (err) throw err;
+      });
+    }
+  });
+} 
 
 // deleteLocalFiles
 // helper function to delete files on the local disk
